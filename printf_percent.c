@@ -2,13 +2,11 @@
 
 /**
  * printf_percent - prints the '%'
- * @args: variable argument list
- * @printed: printed characters
- * Return: printed xters +1
+ * Return: integer
  */
 
 int printf_percent(va_list args, int printed)
 {
-	_putchar('%');
-	return (printed + 1);
+	_putchar(37);
+	return (1);
 }
