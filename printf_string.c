@@ -3,19 +3,30 @@
 /**
  * printf_string - outputs a string
  * @args: arguments
- * @printed: output characters
  * Return: characters
  */
 
-int printf_string(va_list args, int printed)
+int printf_string(va_list args)
 {
-	char *string = va_arg(args, char *);
+	char *string;
+	int i;
+	int length;
+
+	string = va_arg(args, char *);
 
 	while (*string != '\0')
 	{
-		_putchar(*string);
-		printed++;
-		string++;
+		string = "(null)"
+		length = _strlen(string);
+		for (i = 0; i < length; i++)
+			_putchar(string[i]);
+		return (length);
 	}
-	return (printed);
+	else
+	{
+		length = _strlen(string);
+		for (i = 0; i < length; i++)
+			_putchar(string[i]);
+		return (length);
+	}
 }

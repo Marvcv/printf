@@ -1,16 +1,16 @@
-#include "main.c"
+#include "main.h"
 
 /**
- * printf_char - outputs a character
- * @args: arguments
- * @printed: the output
- * Return: output characters
+ * printf_charac - prints a binary number
+ * @val: the arguements to use
+ * @output: the outputed characters
+ * Return: printed charcaters
  */
 
-int printf_char(va_list args, int printed)
+int printf_charac(va_list val, int output)
 {
-	int character = va_arg(args, int);
+	int character = va_arg(val, int);
 
 	_putchar(character);
-	return (printed + 1);
+	return (output + 1);
 }

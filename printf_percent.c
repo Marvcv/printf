@@ -1,11 +1,11 @@
 #include "main.h"
 
 /**
- * printf_percent - prints the '%'
+ * printf_37 - prints the '%'
  * Return: integer
  */
 
-int printf_percent(va_list args, int printed)
+int printf_37(0)
 {
 	_putchar(37);
 	return (1);
