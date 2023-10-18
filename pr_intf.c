@@ -6,7 +6,7 @@ int _printf(const char *format, ...)
 	va_list arglist;
 
 	if (format == NULL)
-		return -1;
+		return (-1);
 
 	va_start(arglist, format);
 
@@ -31,15 +31,16 @@ int _printf(const char *format, ...)
 			else if (*format == 'c')
 			{
 				char c = va_arg(arglist, int);
+
 				write(1, &c, 1);
 				cha_pr++;
 			}
-			elseif (*format == 's')
+			else if (*format == 's')
 			{
 				char *str = va_arg(arglist, char*);
 				int str_len = 0;
 
-				while(str[str_len] != '\0')
+				while (str[str_len] != '\0')
 					str_len++;
 
 				write(1, str, str_len);
@@ -52,4 +53,4 @@ int _printf(const char *format, ...)
 
 	va_end(arglist);
 
-	return cha_pr;
+	return (cha_pr);
