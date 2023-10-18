@@ -5,42 +5,67 @@ int _printf(const char *format, ...)
     if (format == NULL)
         return -1;
 
-    int cha_pr = 0;
-    va_list arglist;
-    va_start(arglist, format);
+    va_list args;
+    va_start(args, format);
+
+    int printed = 0;  // To keep track of the number of characters printed
 
     while (*format)
     {
-        if (*format == '%')
+        if (*format != '%')
         {
-            format++;
-            if (*format == 'c' || *format == 's')
-            {
-                if (*format == 'c')
-                    write(1, &va_arg(arglist, int), 1);
-                else
-                {
-                    char *str = va_arg(arglist, char*);
-                    int str_len = 0;
-                    while (str[str_len] != '\0')
-                        str_len++;
-                    write(1, str, str_len);
-                    cha_pr += str_len;
-                }
-            }
-            else if (*format == '%')
-                write(1, format, 1);
-            cha_pr += (*format == 'c' || *format == 's') ? 1 : 0;
+            write(1, format, 1);
+            printed++;
         }
         else
         {
-            write(1, format, 1);
-            cha_pr++;
+            format++;
+            if (*format == '\0')
+                break;
+
+            if (*format == 'c')
+            {
+                char c = va_arg(args, int);
+                write(1, &c, 1);
+                printed++;
+            }
+            else if (*format == 's')
+            {
+                char *str = va_arg(args, char *);
+                while (*str)
+                {
+                    write(1, str, 1);
+                    str++;
+                    printed++;
+                }
+            }
+            else if (*format == '%')
+            {
+                write(1, "%", 1);
+                printed++;
+            }
         }
+
         format++;
     }
 
-    va_end(arglist);
-    return cha_pr;
+    va_end(args);
+
+    return printed;
 }
 
+int main(void)
+{
+    int len;
+
+    len = _printf("Character: %c\n", 'A');
+    _printf("Length: %d\n", len);
+
+    len = _printf("String: %s\n", "Hello, World!");
+    _printf("Length: %d\n", len);
+
+    len = _printf("Percent sign: %%\n");
+    _printf("Length: %d\n", len);
+
+    return (0);
+}
