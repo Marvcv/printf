@@ -1,21 +1,27 @@
 #include "main.h"
 
+/**
+ * _printf - A simplified implementation of printf.
+ * @format: The format string.
+ *
+ * Return: The number of characters printed.
+ */
 int _printf(const char *format, ...)
 {
     if (format == NULL)
-        return -1;
+        return (-1);
 
     va_list args;
     va_start(args, format);
 
-    int printed = 0;  // To keep track of the number of characters printed
+    int char_pr = 0;  // To keep track of the number of characters printed
 
     while (*format)
     {
         if (*format != '%')
         {
             write(1, format, 1);
-            printed++;
+            char_pr++;
         }
         else
         {
@@ -27,7 +33,7 @@ int _printf(const char *format, ...)
             {
                 char c = va_arg(args, int);
                 write(1, &c, 1);
-                printed++;
+                char_pr++;
             }
             else if (*format == 's')
             {
@@ -36,13 +42,13 @@ int _printf(const char *format, ...)
                 {
                     write(1, str, 1);
                     str++;
-                    printed++;
+                    char_pr++;
                 }
             }
             else if (*format == '%')
             {
                 write(1, "%", 1);
-                printed++;
+                char_pr++;
             }
         }
 
@@ -51,21 +57,6 @@ int _printf(const char *format, ...)
 
     va_end(args);
 
-    return printed;
+    return char_pr;
 }
 
-int main(void)
-{
-    int len;
-
-    len = _printf("Character: %c\n", 'A');
-    _printf("Length: %d\n", len);
-
-    len = _printf("String: %s\n", "Hello, World!");
-    _printf("Length: %d\n", len);
-
-    len = _printf("Percent sign: %%\n");
-    _printf("Length: %d\n", len);
-
-    return (0);
-}
