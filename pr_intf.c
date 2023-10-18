@@ -1,6 +1,6 @@
 #include "main.h"
 
-int _printf(const char *format, ...);
+int _printf(const char *format, ...)
 {
 	int cha_pr = 0;
 	va_list arglist;
