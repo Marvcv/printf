@@ -64,16 +64,16 @@ int _printf(const char *format, ...)
 
 int main(void)
 {
-    int len;
+	int len;
 
-    len = _printf("Character: %c\n", 'A');
-    _printf("Length: %d\n", len);
+	len = _printf("Character: %c\n", 'A');
+	_printf("Length: %d\n", len);
 
-    len = _printf("String: %s\n", "Hello, World!");
-    _printf("Length: %d\n", len);
+	len = _printf("String: %s\n", "Hello, World!");
+	_printf("Length: %d\n", len);
 
-    len = _printf("Percent sign: %%\n");
-    _printf("Length: %d\n", len);
+	len = _printf("Percent sign: %%\n");
+	_printf("Length: %d\n", len);
 
-    return (0);
+	return (0);
 }
