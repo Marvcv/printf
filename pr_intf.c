@@ -52,7 +52,7 @@ int _printf(const char *format, ...)
 				write(1, str, str_len);
 				cha_pr += str_len;
 			}
-			else if (*format == 'd')
+			else if (*format == 'd' || *format == 'i')
               {
                   int num = va_arg(arglist, int);
                   char num_str[12];
@@ -61,8 +61,8 @@ int _printf(const char *format, ...)
                   write(1, num_str, num_len);
                   cha_pr += num_len;
               }
-              else if (*format == 'x')
-              
+              else if (*format == 'x' || *format == 'X')
+	      {
                   unsigned int num = va_arg(arglist, unsigned int);
                   char hex_str[9];
  
@@ -70,6 +70,30 @@ int _printf(const char *format, ...)
                   write(1, hex_str, hex_len);
                   cha_pr += hex_len;
               }
+			else if (*format == 'u')
+			{
+				unsigned int num = va_arg(arglist, unsigned int);
+				char unsigned_str[12];
+			int unsigned_len = snprintf(unsigned_str, sizeof(unsigned_str), "%u", num);
+                write(1, unsigned_str, unsigned_len);
+                char_pr += unsigned_len;
+            }
+            else if (*format == 'o')
+            {
+                unsigned int num = va_arg(arglist, unsigned int);
+                char octal_str[12];
+                int octal_len = snprintf(octal_str, sizeof(octal_str), "%o", num);
+                write(1, octal_str, octal_len);
+                char_pr += octal_len;
+            }
+            else if (*format == 'p')
+            {
+                void *ptr = va_arg(arglist, void *);
+                char ptr_str[16];
+                int ptr_len = snprintf(ptr_str, sizeof(ptr_str), "%p", ptr);
+                write(1, ptr_str, ptr_len);
+                char_pr += ptr_len;
+            }
               else
               {
 		      write(1, format - 1, 2);
