@@ -8,20 +8,20 @@
 
 int _printf(const char *format, ...)
 {
-    int char_count = 0;
-    va_list arglist;
-
     if (format == NULL)
         return (-1);
 
-    va_start(arglist, format);
+    va_list args;
+    va_start(args, format);
+
+    int char_pr = 0;  // To keep track of the number of characters printed
 
     while (*format)
     {
         if (*format != '%')
         {
-            putchar(*format);
-            char_count++;
+            write(1, format, 1);
+            char_pr++;
         }
         else
         {
@@ -31,32 +31,32 @@ int _printf(const char *format, ...)
 
             if (*format == 'c')
             {
-                char c = va_arg(arglist, int);
-                putchar(c);
-                char_count++;
+                char c = va_arg(args, int);
+                write(1, &c, 1);
+                char_pr++;
             }
             else if (*format == 's')
             {
-                char *str = va_arg(arglist, char *);
-                int str_len = 0;
-
-                while (str[str_len] != '\0')
-                    str_len++;
-
-                fputs(str, stdout);
-                char_count += str_len;
+                char *str = va_arg(args, char *);
+                while (*str)
+                {
+                    write(1, str, 1);
+                    str++;
+                    char_pr++;
+                }
             }
             else if (*format == '%')
             {
-                putchar('%');
-                char_count++;
-            }
-            else
-            {
-                putchar('%');
-                putchar(*format);
-                char_count += 2;
+                write(1, "%", 1);
+                char_pr++;
             }
         }
+
         format++;
     }
+
+    va_end(args);
+
+    return char_pr;
+}
+
