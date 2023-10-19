@@ -8,55 +8,56 @@
 
 int _printf(const char *format, ...)
 {
-    if (format == NULL)
-        return (-1);
+        int cha_pr = 0;
+        va_list arglist;
 
-    va_list args;
-    va_start(args, format);
+        if (format == NULL)
+                return (-1);
 
-    int char_pr = 0;
- 
-    while (*format)
-    {
-        if (*format != '%')
+        va_start(arglist, format);
+
+        while (*format)
         {
-            write(1, format, 1);
-            char_pr++;
-        }
-        else
-        {
-            format++;
-            if (*format == '\0')
-                break;
-
-            if (*format == 'c')
-            {
-                char c = va_arg(args, int);
-                write(1, &c, 1);
-                char_pr++;
-            }
-            else if (*format == 's')
-            {
-                char *str = va_arg(args, char *);
-                while (*str)
+                if (*format != '%')
                 {
-                    write(1, str, 1);
-                    str++;
-                    char_pr++;
+                        write(1, format, 1);
+                        cha_pr++;
                 }
-            }
-            else if (*format == '%')
-            {
-                write(1, "%", 1);
-                char_pr++;
-            }
+                else
+                {
+                        format++;
+                        if (*format == '\0')
+                                break;
+
+                        if (*format == '%')
+                        {
+                                write(1, format, 1);
+                                cha_pr++;
+                        }
+                        else if (*format == 'c')
+                        {
+                                char c = va_arg(arglist, int);
+
+                                write(1, &c, 1);
+                                cha_pr++;
+                        }
+                        else if (*format == 's')
+                        {
+                                char *str = va_arg(arglist, char*);
+                                int str_len = 0;
+
+                                while (str[str_len] != '\0')
+                                        str_len++;
+
+                                write(1, str, str_len);
+                                cha_pr += str_len;
+                        }
+                }
+
+                format++;
         }
 
-        format++;
-    }
+        va_end(arglist);
 
-    va_end(args);
-
-    return char_pr;
+        return (cha_pr);
 }
-
