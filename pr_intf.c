@@ -50,7 +50,7 @@ int _printf(const char *format, ...)
 					str_len++;
 
 				write(1, str, str_len);
-				cha_pr += str_len
+				cha_pr += str_len;
 			}
 		}
 
