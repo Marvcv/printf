@@ -5,6 +5,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <limits.h>
+
 int _printf(const char *format, ...);
 int binary(int num);
 int octal(int num);
