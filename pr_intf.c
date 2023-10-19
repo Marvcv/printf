@@ -61,7 +61,7 @@ int _printf(const char *format, ...)
 				write(1, num_str, num_len);
 				cha_pr += num_len;
 			}
-			else if (*format == 'x' || *format == 'X)
+			else if (*format == 'x' || *format == 'X')
 			{
 				unsigned int num = va_arg(arglist, unsigned int);
 				char hex_str[9];
@@ -82,7 +82,7 @@ int _printf(const char *format, ...)
 			{
 				unsigned int num = va_arg(arglist, unsigned int);
 				char octal_str[12];
-				int octal_len = snprintf(octal_str, sizeof(octal_str), "%", num);
+				int octal_len = snprintf(octal_str, sizeof(octal_str), "%o", num);
 				write(1, octal_str, octal_len);
 				cha_pr += octal_len;
 			}
