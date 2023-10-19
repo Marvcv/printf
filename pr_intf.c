@@ -62,7 +62,7 @@ int _printf(const char *format, ...)
                   cha_pr += num_len;
               }
               else if (*format == 'x')
-              {
+              
                   unsigned int num = va_arg(arglist, unsigned int);
                   char hex_str[9];
  
