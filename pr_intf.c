@@ -52,6 +52,29 @@ int _printf(const char *format, ...)
 				write(1, str, str_len);
 				cha_pr += str_len;
 			}
+			else if (*format == 'd')
+              {
+                  int num = va_arg(arglist, int);
+                  char num_str[12];
+ 
+                  int num_len = snprintf(num_str, sizeof(num_str), "%d", num);
+                  write(1, num_str, num_len);
+                  cha_pr += num_len;
+              }
+              else if (*format == 'x')
+              {
+                  unsigned int num = va_arg(arglist, unsigned int);
+                  char hex_str[9];
+ 
+                  int hex_len = snprintf(hex_str, sizeof(hex_str), "%x", num);
+                  write(1, hex_str, hex_len);
+                  cha_pr += hex_len;
+              }
+              else
+              {
+		      write(1, format - 1, 2);
+		      cha_pr += 2;
+              }
 		}
 
 		format++;
