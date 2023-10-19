@@ -14,8 +14,8 @@ int _printf(const char *format, ...)
     va_list args;
     va_start(args, format);
 
-    int char_pr = 0;  // To keep track of the number of characters printed
-
+    int char_pr = 0;
+ 
     while (*format)
     {
         if (*format != '%')
