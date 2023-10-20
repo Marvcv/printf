@@ -6,6 +6,9 @@
  *
  * Return: The number of characters printed, or -1 on error.
  */
+/* Function prototype for print_buffer */
+void print_buffer(char buffer[], int *buff_ind);
+
 int _printf(const char *format, ...)
 {
 	int i, printed = 0, printed_chars = 0;

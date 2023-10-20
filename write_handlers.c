@@ -94,7 +94,7 @@ int write_number(int is_negative, int ind, char buffer[], int flags, int width, 
  */
 int write_num(int ind, char buffer[], int flags, int width, int prec, int length, char padd, char extra_c)
 {
-	int i, padd_start = 1;
+	int i;
 
 	if (prec == 0 && ind == BUFF_SIZE - 2 && buffer[ind] == '0' && width == 0)
 	{
@@ -152,6 +152,8 @@ int write_unsgnd(int is_negative, int ind, char buffer[], int flags, int width, 
 {
 	int length = BUFF_SIZE - ind - 1, i = 0;
 	char padd = ' ';
+	int extra_c = 0; /* Initialize extra_c as needed */
+
 
 	UNUSED(is_negative);
 	UNUSED(size);
