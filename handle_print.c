@@ -9,7 +9,7 @@
  * @flags: Calculates active flags.
  * @width: Width.
  * @precision: Precision specification.
- * @size: Size specifier.
+ * @size: Size specifier in the code.
  *
  * Return: Number of characters printed (1 or 2).
  */
