@@ -1,14 +1,18 @@
 #include "main.h"
 
 /**
- * _printf - Custom printf function.
- * @format: The format string to be printed.
- *
- * Return: The number of characters printed, or -1 on error.
+ * print_buffer - Prints the contents of the buffer if it exists.
+ * @buffer: Array of characters to print.
+ * @buff_ind: Pointer to the index at which to add the next character, representing the length.
  */
-/* Function prototype for print_buffer */
 void print_buffer(char buffer[], int *buff_ind);
 
+/**
+ * _printf - Custom printf function.
+ * @format: The format string.
+ *
+ * Return: The number of characters printed.
+ */
 int _printf(const char *format, ...)
 {
 	int i, printed = 0, printed_chars = 0;
@@ -37,9 +41,8 @@ int _printf(const char *format, ...)
 			width = get_width(format, &i, list);
 			precision = get_precision(format, &i, list);
 			size = get_size(format, &i);
-			++i;
-			printed = handle_print(format, &i, list, buffer,
-				flags, width, precision, size);
+			i++;
+			printed = handle_print(format, &i, list, buffer, flags, width, precision, size);
 			if (printed == -1)
 				return (-1);
 			printed_chars += printed;
@@ -55,8 +58,8 @@ int _printf(const char *format, ...)
 
 /**
  * print_buffer - Prints the contents of the buffer if it exists.
- * @buffer: Array of characters.
- * @buff_ind: Index at which to add the next character, represents the length.
+ * @buffer: Array of characters to print.
+ * @buff_ind: Pointer to the index at which to add the next character, representing the length.
  */
 void print_buffer(char buffer[], int *buff_ind)
 {

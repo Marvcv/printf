@@ -3,15 +3,15 @@
 /**
  * handle_print - Prints an argument based on its type.
  * @fmt: Formatted string in which to print the arguments.
- * @ind: A pointer to the current position in the format string.
+ * @ind: An index.
  * @list: List of arguments to be printed.
  * @buffer: Buffer array to handle print.
- * @flags: Flags that determine how to format the output.
- * @width: Width specification.
+ * @flags: Calculates active flags.
+ * @width: Width.
  * @precision: Precision specification.
  * @size: Size specifier.
  *
- * Return: The number of characters printed or -1 on failure.
+ * Return: Number of characters printed (1 or 2).
  */
 int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
 	int flags, int width, int precision, int size)
@@ -28,7 +28,9 @@ int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
 	for (i = 0; fmt_types[i].fmt != '\0'; i++)
 	{
 		if (fmt[*ind] == fmt_types[i].fmt)
+		{
 			return (fmt_types[i].fn(list, buffer, flags, width, precision, size));
+		}
 	}
 
 	if (fmt_types[i].fmt == '\0')
@@ -47,10 +49,13 @@ int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
 		{
 			--(*ind);
 			while (fmt[*ind] != ' ' && fmt[*ind] != '%')
+			{
 				--(*ind);
-
+			}
 			if (fmt[*ind] == ' ')
+			{
 				--(*ind);
+			}
 			return (1);
 		}
 

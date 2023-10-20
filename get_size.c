@@ -1,11 +1,11 @@
 #include "main.h"
 
 /**
- * get_size - Calculates the size to cast the argument
- * @format: Formatted string in which to print the arguments.
- * @i: A pointer to the current position in the format string.
+ * get_size - Calculates the size to cast the argument based on the format string.
+ * @format: A formatted string specifying the argument type and size.
+ * @i: A pointer to the index of the current character in the format string.
  *
- * Return: The size specifier value (S_LONG, S_SHORT), or 0 if not specified.
+ * Return: The size specifier for casting the argument.
  */
 int get_size(const char *format, int *i)
 {
@@ -13,14 +13,22 @@ int get_size(const char *format, int *i)
 	int size = 0;
 
 	if (format[curr_i] == 'l')
-		size = S_LONG;
+	{
+		size = S_LONG; /* Size specifier for long */
+	}
 	else if (format[curr_i] == 'h')
-		size = S_SHORT;
+	{
+		size = S_SHORT; /* Size specifier for short */
+	}
 
 	if (size == 0)
+	{
 		*i = curr_i - 1;
+	}
 	else
+	{
 		*i = curr_i;
+	}
 
 	return (size);
 }

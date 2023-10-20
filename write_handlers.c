@@ -1,209 +1,122 @@
 #include "main.h"
 
-/************************* WRITE HANDLE *************************/
 /**
- * handle_write_char - Prints a character
- * @c: Character to print.
- * @buffer: Buffer array to handle print.
- * @flags: Calculates active flags.
- * @width: Width specifier.
- * @precision: Precision specifier.
- * @size: Size specifier.
- *
- * Return: Number of characters printed.
+ * write_char - Writes a character to stdout
+ * @c: The character to write
+ * Return: Number of printed characters (always 1)
  */
-int handle_write_char(char c, char buffer[], int flags, int width, int precision, int size)
+int write_char(char c)
 {
-	int i = 0;
-	char padd = ' ';
-
-	UNUSED(precision);
-	UNUSED(size);
-
-	if (flags & F_ZERO)
-		padd = '0';
-
-	buffer[i++] = c;
-	buffer[i] = '\0';
-
-	if (width > 1)
-	{
-		buffer[BUFF_SIZE - 1] = '\0';
-		for (i = 0; i < width - 1; i++)
-			buffer[BUFF_SIZE - i - 2] = padd;
-
-		if (flags & F_MINUS)
-		{
-			return (write(1, &buffer[0], 1) +
-					write(1, &buffer[BUFF_SIZE - i - 1], width - 1));
-		}
-		else
-		{
-			return (write(1, &buffer[BUFF_SIZE - i - 1], width - 1) +
-					write(1, &buffer[0], 1));
-		}
-	}
-
-	return (write(1, &buffer[0], 1));
-}
-
-/************************* WRITE NUMBER *************************/
-/**
- * write_number - Prints a number
- * @is_negative: Flag indicating if the number is negative.
- * @ind: Index at which the number starts in the buffer.
- * @buffer: Buffer array to handle print.
- * @flags: Calculates active flags.
- * @width: Width specifier.
- * @precision: Precision specifier.
- * @size: Size specifier.
- *
- * Return: Number of characters printed.
- */
-int write_number(int is_negative, int ind, char buffer[], int flags, int width, int precision, int size)
-{
-	int length = BUFF_SIZE - ind - 1;
-	char padd = ' ', extra_ch = 0;
-
-	UNUSED(size);
-
-	if ((flags & F_ZERO) && !(flags & F_MINUS))
-		padd = '0';
-	if (is_negative)
-		extra_ch = '-';
-	else if (flags & F_PLUS)
-		extra_ch = '+';
-	else if (flags & F_SPACE)
-		extra_ch = ' ';
-
-	return (write_num(ind, buffer, flags, width, precision, length, padd, extra_ch));
+	return write(1, &c, 1);
 }
 
 /**
- * write_num - Write a number using a buffer
- * @ind: Index at which the number starts on the buffer.
- * @buffer: Buffer.
- * @flags: Flags.
- * @width: Width.
- * @prec: Precision specifier.
- * @length: Number length.
- * @padd: Padding character.
- * @extra_c: Extra character.
- *
- * Return: Number of printed characters.
+ * write_str - Writes a string to stdout
+ * @str: The string to write
+ * Return: Number of printed characters
  */
-int write_num(int ind, char buffer[], int flags, int width, int prec, int length, char padd, char extra_c)
+int write_str(char *str)
 {
-	int i;
+	int len = str_len(str);
 
-	if (prec == 0 && ind == BUFF_SIZE - 2 && buffer[ind] == '0' && width == 0)
-	{
-		return (0); /* printf(".0d", 0)  no character is printed */
-	}
-	if (prec == 0 && ind == BUFF_SIZE - 2 && buffer[ind] == '0')
-	{
-		buffer[ind] = padd = ' '; /* width is displayed with padding ' ' */
-	}
-	if (prec > 0 && prec < length)
-		padd = ' ';
-	while (prec > length)
-	{
-		buffer[--ind] = '0';
-		length++;
-	}
-	if (extra_c != 0)
-		length++;
-	if (width > length)
-	{
-		for (i = 1; i < width - length + 1; i++)
-			buffer[i] = padd;
-		buffer[i] = '\0';
-		if (flags & F_MINUS && padd == ' ')
-		{
-			if (extra_c)
-				buffer[--ind] = extra_c;
-			return (write(1, &buffer[ind], length) + write(1, &buffer[0], i));
-		}
-		else
-		{
-			if (extra_c)
-				buffer[--ind] = extra_c;
-			return (write(1, &buffer[0], i) + write(1, &buffer[ind], length));
-		}
-	}
-	if (extra_c)
-		buffer[--ind] = extra_c;
-	return (write(1, &buffer[ind], length));
+	return write(1, str, len);
 }
 
 /**
- * write_unsgnd - Writes an unsigned number
- * @is_negative: Flag indicating if the number is negative.
- * @ind: Index at which the number starts in the buffer.
- * @buffer: Array of characters.
- * @flags: Flags specifiers.
- * @width: Width specifier.
- * @precision: Precision specifier.
- * @size: Size specifier.
- *
- * Return: Number of written characters.
+ * write_percent - Writes a percent character to stdout
+ * Return: Number of printed characters (always 1)
  */
-int write_unsgnd(int is_negative, int ind, char buffer[], int flags, int width, int precision, int size)
+int write_percent(void)
 {
-	int length = BUFF_SIZE - ind - 1, i = 0;
-	char padd = ' ';
-	int extra_c = 0; /* Initialize extra_c as needed */
+	return write(1, "%", 1);
+}
 
+/**
+ * write_int - Writes an integer to stdout
+ * @n: The integer to write
+ * Return: Number of printed characters
+ */
+int write_int(int n)
+{
+	char buffer[BUFF_SIZE];
+	int len, neg;
 
-	UNUSED(is_negative);
-	UNUSED(size);
-
-	if (precision == 0 && ind == BUFF_SIZE - 2 && buffer[ind] == '0')
+	neg = (n < 0) ? 1 : 0;
+	if (n == 0)
+		return (write_char('0'));
+	if (n == INT_MIN)
 	{
-		return (0); /* printf(".0d, 0)  no character is printed */
+		str_cpy(buffer, "-2147483648");
+		return (write_str(buffer));
 	}
-
-	if (precision > 0 && precision < length)
-		padd = ' ';
-
-	while (precision > length)
+	n = (neg == 1) ? -n : n;
+	len = 0;
+	while (n > 0)
 	{
-		buffer[--ind] = '0';
-		length++;
+		buffer[len] = (n % 10) + '0';
+		n /= 10;
+		len++;
 	}
-
-	if ((flags & F_ZERO) && !(flags & F_MINUS))
-		padd = '0';
-
-	if (width > length)
+	if (neg)
 	{
-		for (i = 0; i < width - length; i++)
-			buffer[i] = padd;
+		buffer[len] = '-';
+		len++;
+	}
+	buffer[len] = '\0';
+	str_rev(buffer);
+	return (write_str(buffer));
+}
 
-		buffer[i] = '\0';
+/**
+ * write_unsigned - Writes an unsigned integer to stdout
+ * @n: The unsigned integer to write
+ * Return: Number of printed characters
+ */
+int write_unsigned(unsigned int n)
+{
+	char buffer[BUFF_SIZE];
+	int len;
 
-		if (flags & F_MINUS)
-		{
-			buffer[--ind] = 'x';
-			buffer[--ind] = '0';
-			if (extra_c)
-				buffer[--ind] = extra_c;
-			return (write(1, &buffer[ind], length) + write(1, &buffer[0], i));
-		}
+	if (n == 0)
+		return (write_char('0'));
+	len = 0;
+	while (n > 0)
+	{
+		buffer[len] = (n % 10) + '0';
+		n /= 10;
+		len++;
+	}
+	buffer[len] = '\0';
+	str_rev(buffer);
+	return (write_str(buffer));
+}
+
+/**
+ * write_hex - Writes a hexadecimal number to stdout
+ * @n: The hexadecimal number to write
+ * @is_upper: Uppercase or lowercase letters
+ * Return: Number of printed characters
+ */
+int write_hex(unsigned int n, int is_upper)
+{
+	char buffer[BUFF_SIZE];
+	int len, rem;
+
+	if (n == 0)
+		return (write_char('0'));
+	len = 0;
+	while (n > 0)
+	{
+		rem = n % 16;
+		if (rem < 10)
+			buffer[len] = rem + '0';
 		else
-		{
-			buffer[--ind] = 'x';
-			buffer[--ind] = '0';
-			if (extra_c)
-				buffer[--ind] = extra_c;
-			return (write(1, &buffer[0], i) + write(1, &buffer[ind], length));
-		}
+			buffer[len] = is_upper ? (rem - 10) + 'A' : (rem - 10) + 'a';
+		n /= 16;
+		len++;
 	}
-
-	buffer[--ind] = 'x';
-	buffer[--ind] = '0';
-	if (extra_c)
-		buffer[--ind] = extra_c;
-	return (write(1, &buffer[ind], BUFF_SIZE - ind - 1));
+	buffer[len] = '\0';
+	str_rev(buffer);
+	return (write_str(buffer));
 }
 
