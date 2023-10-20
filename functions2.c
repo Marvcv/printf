@@ -62,7 +62,7 @@ int print_pointer(va_list types, char buffer[],
  * @flags: Calculates active flags.
  * @width: Width.
  * @precision: Precision specification.
- * @size: Size specifier.
+ * @size: Size of the specifier.
  *
  * Return: Number of characters printed.
  */
