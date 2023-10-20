@@ -6,7 +6,7 @@
  * @i: A pointer to the index of the current character in the format string.
  * @list: A list of arguments.
  *
- * Return: The width for printing.
+ * Return: The width for printing as output.
  */
 int get_width(const char *format, int *i, va_list list)
 {
