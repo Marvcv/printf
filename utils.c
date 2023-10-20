@@ -71,7 +71,7 @@ long int convert_size_number(long int num, int size)
 }
 
 /**
- * convert_size_unsgnd - Casts a number to the specified size
+ * convert_size_unsgnd - Casts a number to the specified size as needed
  * @num: Number to be casted
  * @size: Number indicating the type to be casted
  *
